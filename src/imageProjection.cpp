@@ -178,21 +178,21 @@ public:
         imuQueue.push_back(thisImu);
 
         // debug IMU data
-        // cout << std::setprecision(6);
-        // cout << "IMU acc: " << endl;
-        // cout << "x: " << thisImu.linear_acceleration.x << 
-        //       ", y: " << thisImu.linear_acceleration.y << 
-        //       ", z: " << thisImu.linear_acceleration.z << endl;
-        // cout << "IMU gyro: " << endl;
-        // cout << "x: " << thisImu.angular_velocity.x << 
-        //       ", y: " << thisImu.angular_velocity.y << 
-        //       ", z: " << thisImu.angular_velocity.z << endl;
-        // double imuRoll, imuPitch, imuYaw;
-        // tf::Quaternion orientation;
-        // tf::quaternionMsgToTF(thisImu.orientation, orientation);
-        // tf::Matrix3x3(orientation).getRPY(imuRoll, imuPitch, imuYaw);
-        // cout << "IMU roll pitch yaw: " << endl;
-        // cout << "roll: " << imuRoll << ", pitch: " << imuPitch << ", yaw: " << imuYaw << endl << endl;
+        cout << std::setprecision(6);
+        cout << "IMU acc: " << endl;
+        cout << "x: " << thisImu.linear_acceleration.x << 
+              ", y: " << thisImu.linear_acceleration.y << 
+              ", z: " << thisImu.linear_acceleration.z << endl;
+        cout << "IMU gyro: " << endl;
+        cout << "x: " << thisImu.angular_velocity.x << 
+              ", y: " << thisImu.angular_velocity.y << 
+              ", z: " << thisImu.angular_velocity.z << endl;
+        double imuRoll, imuPitch, imuYaw;
+        tf2::Quaternion orientation;
+        tf2::fromMsg(thisImu.orientation, orientation);
+        tf2::Matrix3x3(orientation).getRPY(imuRoll, imuPitch, imuYaw);
+        cout << "IMU roll pitch yaw: " << endl;
+        cout << "roll: " << imuRoll << ", pitch: " << imuPitch << ", yaw: " << imuYaw << endl << endl;
     }
 
     void odometryHandler(const nav_msgs::msg::Odometry::SharedPtr odometryMsg)
@@ -260,6 +260,11 @@ public:
         cloudHeader = currentCloudMsg.header;
         timeScanCur = stamp2Sec(cloudHeader.stamp);
         timeScanEnd = timeScanCur + laserCloudIn->points.back().time;
+
+        // remove Nan
+        laserCloudIn->is_dense = false;
+        vector<int> indices;
+        pcl::removeNaNFromPointCloud(*laserCloudIn, *laserCloudIn, indices);
 
         // check dense flag
         if (laserCloudIn->is_dense == false)

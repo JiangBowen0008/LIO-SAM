@@ -27,7 +27,8 @@
 #include <pcl/common/transforms.h>
 #include <pcl/registration/icp.h>
 #include <pcl/io/pcd_io.h>
-#include <pcl/filters/filter.h>
+// #include <pcl/filters/filter.h>
+#include <pcl/filters/impl/filter.hpp>
 #include <pcl/filters/voxel_grid.h>
 #include <pcl/filters/crop_box.h> 
 #include <pcl_conversions/pcl_conversions.h>
