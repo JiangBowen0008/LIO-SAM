@@ -104,6 +104,7 @@ public:
     float imuAccBiasN;
     float imuGyrBiasN;
     float imuGravity;
+    float imuXBias, imuYBias;       // adding the x and y bias
     float imuRPYWeight;
     vector<double> extRotV;
     vector<double> extRPYV;
@@ -209,6 +210,10 @@ public:
         get_parameter("imuGravity", imuGravity);
         declare_parameter("imuRPYWeight", 0.01);
         get_parameter("imuRPYWeight", imuRPYWeight);
+        declare_parameter("imuXBias", 0.0);
+        get_parameter("imuXBias", imuXBias);
+        declare_parameter("imuYBias", 0.0);
+        get_parameter("imuYBias", imuYBias);
 
         double ida[] = { 1.0,  0.0,  0.0,
                          0.0,  1.0,  0.0,
