@@ -50,6 +50,7 @@ private:
     rclcpp::Publisher<lio_sam::msg::CloudInfo>::SharedPtr pubLaserCloudInfo;
 
     rclcpp::Subscription<sensor_msgs::msg::Imu>::SharedPtr subImu;
+    rclcpp::Publisher<sensor_msgs::msg::Imu>::SharedPtr pubImu;
     rclcpp::CallbackGroup::SharedPtr callbackGroupImu;
     std::deque<sensor_msgs::msg::Imu> imuQueue;
 
@@ -123,6 +124,8 @@ public:
             "lio_sam/deskew/cloud_deskewed", 1);
         pubLaserCloudInfo = create_publisher<lio_sam::msg::CloudInfo>(
             "lio_sam/deskew/cloud_info", qos);
+        pubImu = create_publisher<sensor_msgs::msg::Imu>(
+            "lio_sam/imu/debug", 1);
 
         allocateMemory();
         resetParameters();
@@ -176,8 +179,9 @@ public:
 
         std::lock_guard<std::mutex> lock1(imuLock);
         imuQueue.push_back(thisImu);
-
+        
         // debug IMU data
+        pubImu->publish(thisImu);
         // cout << std::setprecision(6);
         // cout << "IMU acc: " << endl;
         // cout << "x: " << thisImu.linear_acceleration.x << 
