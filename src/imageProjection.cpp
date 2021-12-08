@@ -181,7 +181,15 @@ public:
         imuQueue.push_back(thisImu);
         
         // debug IMU data
+
         pubImu->publish(thisImu);
+        tf2::Quaternion orientation;
+        tf2::fromMsg(thisImu.orientation, orientation);
+        double imuRoll, imuPitch, imuYaw;
+        tf2::Matrix3x3(orientation).getRPY(imuRoll, imuPitch, imuYaw);
+        // cout << "roll: " << imuRoll << ", pitch: " << imuPitch << ", yaw: " << imuYaw << endl << endl;
+
+
         // cout << std::setprecision(6);
         // cout << "IMU acc: " << endl;
         // cout << "x: " << thisImu.linear_acceleration.x << 

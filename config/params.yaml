@@ -38,11 +38,11 @@
     imuAccBiasN: 3.0e-1 #6.4356659353532566e-05
     imuGyrBiasN: 3.0e-1       #3.5640318696367613e-05
 
-    imuGravity: 9.57590193
+    imuGravity: 9.8
     imuRPYWeight: 0.01
 
-    imuXBias: -0.14606549
-    imuYBias: 0.28830148
+    imuXBias: 0.0
+    imuYBias: 0.0
 
     # extrinsicTrans:  [ 0.0,  0.0,  0.0 ]
     # extrinsicRot:    [ 1.0,  0.0,  0.0,
@@ -60,15 +60,18 @@
                        0.0,  0.0, -1.0 ]
 
     # It controls the orientation
-    extrinsicRPY: [ 0.0,  0.0,  1.0,
-                    0.0,  1.0,  0.0,
-                    1.0,  0.0,  0.0 ]
+    # extrinsicRPY: [ 0.0,  1.0,  0.0,
+    #                 -1.0,  0.0,  0.0,
+    #                 0.0,  0.0,  1.0]
+    extrinsicRPY: [-1.0,  0.0,  0.0,
+                  0.0,  -1.0,  0.0,
+                  0.0,  0.0,  -1.0 ]
 
     # LOAM feature threshold
     edgeThreshold: 1.0
     surfThreshold: 0.1
     edgeFeatureMinValidNum: 10
-    surfFeatureMinValidNum: 200    #100
+    surfFeatureMinValidNum: 100    #100
 
     # voxel filter paprams
     odometrySurfLeafSize: 0.2                     # default: 0.4 - outdoor, 0.2 - indoor

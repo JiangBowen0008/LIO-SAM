@@ -309,13 +309,41 @@ public:
         imu_out.angular_velocity.y = gyr.y();
         imu_out.angular_velocity.z = gyr.z();
         // rotate roll pitch yaw
-        Eigen::Quaterniond q_from(imu_in.orientation.w, imu_in.orientation.x, imu_in.orientation.y, imu_in.orientation.z);
-        Eigen::Quaterniond q_final = q_from * extQRPY;
+        // Eigen::Quaterniond q_from(imu_in.orientation.w, imu_in.orientation.x, imu_in.orientation.y, imu_in.orientation.z);
+        // Eigen::Quaterniond q_final = q_from * extQRPY;
+        // cout << "QRPY:" << extQRPY << endl;
+
+        // Rotation Matrix Approach
+        // Eigen::Quaterniond q_final;
+        // cout << "extRPY:" << extRPY << endl;
+        // q_final = Eigen::Quaterniond((extRPY * q_from.normalized().toRotationMatrix()));
+
+        // Euler Angle Approach
+        tf2::Quaternion orientation;
+        tf2::fromMsg(imu_in.orientation, orientation);
+        double roll_from, pitch_from, yaw_from, roll_final, pitch_final, yaw_final;
+        tf2::Matrix3x3(orientation).getRPY(roll_from, pitch_from, yaw_from);
+        roll_final = -roll_from;
+        pitch_final = pitch_from;
+        yaw_final = -yaw_from;
+
+        // Convert Back
+        Eigen::AngleAxisd rollAngle(roll_final, Eigen::Vector3d::UnitX()); 
+        Eigen::AngleAxisd pitchAngle(pitch_final, Eigen::Vector3d::UnitY());
+        Eigen::AngleAxisd yawAngle(yaw_final, Eigen::Vector3d::UnitZ());  
+        Eigen::Quaternion<double> q_final = rollAngle * yawAngle * pitchAngle; 
+        Eigen::Matrix3d rotationMatrix = q_final.matrix();
+        q_final = Eigen::Quaterniond(rotationMatrix);
+        
+        // // Test if they are the same
+        // cout << "Debug1 roll: " << roll_final << ", pitch: " << pitch_final << ", yaw: " << yaw_final << endl;
+        // cout << "Debug2 roll: " << roll_final << ", pitch: " << pitch_final << ", yaw: " << yaw_final << endl;
+
         imu_out.orientation.x = q_final.x();
         imu_out.orientation.y = q_final.y();
         imu_out.orientation.z = q_final.z();
         imu_out.orientation.w = q_final.w();
-
+        
         if (sqrt(q_final.x()*q_final.x() + q_final.y()*q_final.y() + q_final.z()*q_final.z() + q_final.w()*q_final.w()) < 0.1)
         {
             RCLCPP_ERROR(get_logger(), "Invalid quaternion, please use a 9-axis IMU!");
