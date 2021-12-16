@@ -2,7 +2,7 @@ lio_sam:
 
   # Topics
   pointCloudTopic: "velodyne_points" #"points_raw"               # Point cloud data
-  imuTopic: '/imu/imu' #"imu_correct"                         # IMU data
+  imuTopic: '/imu_corrected' #"imu_correct"                         # IMU data
   odomTopic: "odometry/imu"                   # IMU pre-preintegration odometry, same frequency as IMU
   gpsTopic: "odometry/gpsz"                   # GPS odometry topic from navsat, see module_navsat.launch file
 
@@ -13,7 +13,7 @@ lio_sam:
   mapFrame: "map"
 
   # GPS Settings
-  useImuHeadingInitialization: true           # if using GPS data, set to "true"
+  useImuHeadingInitialization: false           # if using GPS data, set to "true"
   useGpsElevation: false                      # if GPS elevation is bad, set to "false"
   gpsCovThreshold: 2.0                        # m^2, threshold for using GPS data
   poseCovThreshold: 25.0                      # m^2, threshold for using GPS data
@@ -31,8 +31,8 @@ lio_sam:
   lidarMaxRange: 1000.0                       # default: 1000.0, maximum lidar range to be used
 
   # IMU Settings
-  imuAccNoise: 3.9939570888238808e-03
-  imuGyrNoise: 1.5636343949698187e-03
+  imuAccNoise: 3.9939570888238808e-01
+  imuGyrNoise: 1.5636343949698187e-01
   imuAccBiasN: 6.4356659353532566e-05
   imuGyrBiasN: 3.5640318696367613e-05
   imuGravity: 9.80511
@@ -127,7 +127,7 @@ ekf_gps:
   # -------------------------------------
   # External IMU:
   # -------------------------------------
-  imu0: imu_correct
+  imu0: imu_corrected
   # make sure the input is aligned with ROS REP105. "imu_correct" is manually transformed by myself. EKF can also transform the data using tf between your imu and base_link
   imu0_config: [false, false, false,
                 true,  true,  true,
