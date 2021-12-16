@@ -57,9 +57,9 @@ This is the original ROS1 implementation of LIO-SAM. For a ROS2 implementation s
 
 - [ROS](http://wiki.ros.org/ROS/Installation) (tested with Kinetic and Melodic)
   ```
-  sudo apt-get install -y ros-kinetic-navigation
-  sudo apt-get install -y ros-kinetic-robot-localization
-  sudo apt-get install -y ros-kinetic-robot-state-publisher
+  sudo apt-get install -y ros-noetic-navigation
+  sudo apt-get install -y ros-noetic-robot-localization
+  sudo apt-get install -y ros-noetic-robot-state-publisher
   ```
 - [gtsam](https://github.com/borglab/gtsam/releases) (Georgia Tech Smoothing and Mapping library)
   ```
