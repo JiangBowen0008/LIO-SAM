@@ -1,14 +1,14 @@
 lio_sam:
 
   # Topics
-  pointCloudTopic: "points_raw"               # Point cloud data
-  imuTopic: "imu_raw"                         # IMU data
+  pointCloudTopic: "velodyne_points" #"points_raw"               # Point cloud data
+  imuTopic: '/imu/imu' #"imu_correct"                         # IMU data
   odomTopic: "odometry/imu"                   # IMU pre-preintegration odometry, same frequency as IMU
   gpsTopic: "odometry/gpsz"                   # GPS odometry topic from navsat, see module_navsat.launch file
 
   # Frames
-  lidarFrame: "base_link"
-  baselinkFrame: "base_link"
+  lidarFrame: "velodyne" #"base_link" 
+  baselinkFrame: "imu_link"
   odometryFrame: "odom"
   mapFrame: "map"
 
@@ -53,6 +53,12 @@ lio_sam:
   #                 0, 1, 0,
   #                 0, 0, 1]
 
+  # extrinsicRot: [-0.777765,  0.459006,  0.429413,
+  #               -0.370316, -0.886639, 0.277015,
+  #               0.507885, 0.0564338,  0.859574]
+  # extrinsicRPY: [ -0.7777637,  0.3703192, -0.5078852,
+  #               -0.3989268, -0.9152446, -0.0564338,
+  #               -0.4857377,  0.1587169,  0.8595743 ]
   # LOAM feature threshold
   edgeThreshold: 1.0
   surfThreshold: 0.1
@@ -60,9 +66,9 @@ lio_sam:
   surfFeatureMinValidNum: 100
 
   # voxel filter paprams
-  odometrySurfLeafSize: 0.4                     # default: 0.4 - outdoor, 0.2 - indoor
-  mappingCornerLeafSize: 0.2                    # default: 0.2 - outdoor, 0.1 - indoor
-  mappingSurfLeafSize: 0.4                      # default: 0.4 - outdoor, 0.2 - indoor
+  odometrySurfLeafSize: 0.2                     # default: 0.4 - outdoor, 0.2 - indoor
+  mappingCornerLeafSize: 0.1                    # default: 0.2 - outdoor, 0.1 - indoor
+  mappingSurfLeafSize: 0.2                      # default: 0.4 - outdoor, 0.2 - indoor
 
   # robot motion constraint (in case you are using a 2D robot)
   z_tollerance: 1000                            # meters
